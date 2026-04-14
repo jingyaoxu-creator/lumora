@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import type { AnalysisResult, AIResponse } from "@/lib/types";
+import { checkFeatureAccess, denyResponse } from "@/lib/plan-limits";
 
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
   try {
+    const access = await checkFeatureAccess("suggestions");
+    if (!access.allowed) return denyResponse(access, "AI 建议");
+
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
@@ -38,10 +42,16 @@ export async function POST(req: Request) {
       return NextResponse.json(perfect);
     }
 
+    // Sort by severity: errors first, then warnings, then notices
+    const severityOrder = { error: 0, warning: 1, notice: 2 };
+    failingChecks.sort((a, b) =>
+      (severityOrder[a.severity] ?? 2) - (severityOrder[b.severity] ?? 2)
+    );
+
     const checksText = failingChecks
       .map(
         (c) =>
-          `- [${c.status.toUpperCase()}] ${c.name} (score: ${c.score}/100): ${c.details}${c.suggestion ? ` Hint: ${c.suggestion}` : ""}`
+          `- [${c.severity?.toUpperCase() ?? c.status.toUpperCase()}] ${c.name} (${c.category}, score: ${c.score}/100): ${c.details}${c.suggestion ? ` Hint: ${c.suggestion}` : ""}`
       )
       .join("\n");
 
@@ -53,12 +63,13 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "user",
-          content: `You are an expert SEO and GEO (Generative Engine Optimization) consultant. Analyze these audit results for ${analysis.url} and provide actionable fix suggestions.
+          content: `You are an expert SEO and GEO (Generative Engine Optimization) consultant, similar to Semrush's site audit advisor. Analyze these comprehensive audit results for ${analysis.url} and provide actionable fix suggestions.
 
 Page: "${analysis.pageTitle}"
 Overall Score: ${analysis.overallScore}/100 | SEO: ${analysis.seoScore}/100 | GEO: ${analysis.geoScore}/100
+Stats: ${analysis.stats?.errors ?? 0} errors, ${analysis.stats?.warnings ?? 0} warnings, ${analysis.stats?.notices ?? 0} notices (${analysis.stats?.total ?? 0} total checks)
 
-Issues found:
+Issues found (sorted by severity):
 ${checksText}
 
 Respond in this exact JSON format (no markdown, no code fences, just raw JSON):

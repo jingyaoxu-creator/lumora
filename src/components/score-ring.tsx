@@ -23,8 +23,7 @@ export function ScoreRing({
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
 
-  const resolvedColor =
-    color ?? (score >= 80 ? "#22c55e" : score >= 50 ? "#f59e0b" : "#ef4444");
+  const resolvedColor = color ?? "#0a0a0a";
 
   return (
     <div className="flex flex-col items-center gap-3">

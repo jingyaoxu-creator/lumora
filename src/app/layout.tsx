@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { Geist } from "next/font/google";
 import { Instrument_Serif } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LanguageProvider } from "@/lib/i18n/context";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { LenisProvider } from "@/components/lenis-provider";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const miSans = localFont({
+  src: [
+    { path: "../fonts/MiSans-Light.ttf", weight: "300", style: "normal" },
+    { path: "../fonts/MiSans-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../fonts/MiSans-Medium.ttf", weight: "500", style: "normal" },
+    { path: "../fonts/MiSans-Semibold.ttf", weight: "600", style: "normal" },
+    { path: "../fonts/MiSans-Bold.ttf", weight: "700", style: "normal" },
+  ],
+  variable: "--font-misans",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
@@ -38,14 +46,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
+      className={`${miSans.variable} ${geist.variable} ${instrumentSerif.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          <TooltipProvider>
-            <LenisProvider>{children}</LenisProvider>
-          </TooltipProvider>
+          <LanguageProvider>
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

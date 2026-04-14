@@ -6,9 +6,11 @@ import Lenis from "lenis";
 export function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2,
+      lerp: 0.1,
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
+      smoothWheel: true,
+      // smoothTouch removed in newer Lenis versions
     });
 
     function raf(time: number) {

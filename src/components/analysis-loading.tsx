@@ -48,7 +48,7 @@ export function AnalysisLoading() {
                 Analyzing your page...
               </motion.p>
               <p className="text-xs text-muted-foreground">
-                Running 22 checks across SEO and GEO
+                Running 137 checks across SEO, GEO, and 10 AI platforms
               </p>
             </div>
           </div>
