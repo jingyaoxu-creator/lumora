@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { WaffoPancake } from "@waffo/pancake-ts";
 
-const client = new WaffoPancake({
-  merchantId: process.env.WAFFO_MERCHANT_ID!.trim(),
-  privateKey: process.env.WAFFO_PRIVATE_KEY!.trim(),
-});
-
 export async function POST(request: NextRequest) {
   try {
+    const client = new WaffoPancake({
+      merchantId: (process.env.WAFFO_MERCHANT_ID ?? "").trim(),
+      privateKey: (process.env.WAFFO_PRIVATE_KEY ?? "").trim(),
+    });
+
     const body = await request.json();
     const buyerEmail: string | undefined = body.buyerEmail;
     const plan: "pro" | "business" = body.plan === "business" ? "business" : "pro";
 
     const productId = (
       plan === "business"
-        ? process.env.WAFFO_PRODUCT_ID_BUSINESS!
-        : process.env.WAFFO_PRODUCT_ID_PRO!
+        ? process.env.WAFFO_PRODUCT_ID_BUSINESS ?? ""
+        : process.env.WAFFO_PRODUCT_ID_PRO ?? ""
     ).trim();
 
     const session = await client.checkout.createSession({
