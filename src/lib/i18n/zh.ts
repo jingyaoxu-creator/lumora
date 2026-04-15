@@ -37,7 +37,7 @@ export const zh = {
   },
   home: {
     badge: "SEO & GEO 搜索分析",
-    headline1: "被看见，",
+    headline1: "被看见",
     headline2: "才是真正的存在",
     subtitle: "秒级 SEO & GEO 深度分析，了解你的网站在传统搜索与 AI 搜索引擎中的表现。",
     inputPlaceholder: "输入任意 URL 开始分析...",

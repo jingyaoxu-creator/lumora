@@ -221,7 +221,7 @@ export default function Home() {
 
           <h1
             data-hero-anim
-            className={`mb-8 text-[clamp(3rem,7vw,5.5rem)] font-bold leading-[1.06] tracking-tight transition-colors duration-500 ${
+            className={`mb-8 text-[clamp(3rem,7vw,5.5rem)] font-bold leading-[1.15] tracking-tight transition-colors duration-500 ${
               GRADIENT_PRESETS[activePreset]?.light ? "text-foreground" : "text-white"
             }`}
             style={{ fontFamily: "var(--font-geist)" }}
