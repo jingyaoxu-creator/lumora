@@ -172,7 +172,7 @@ export default function Home() {
       {/* ─── Hero with WebGL Mesh Gradient ─── */}
       <section ref={heroRef} className="relative h-screen min-h-[700px] overflow-hidden">
         {/* Static gradient placeholder — same colors as Lumora preset, hidden once WebGL paints */}
-        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #ef008f 0%, #6ec3f4 35%, #7038ff 65%, #fbaf3f 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 20% 50%, #ef008f 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, #fbaf3f 0%, transparent 50%), radial-gradient(ellipse at 60% 80%, #7038ff 0%, transparent 55%), radial-gradient(ellipse at 40% 30%, #6ec3f4 0%, transparent 50%), linear-gradient(160deg, #ef008f, #f76b1c, #fbaf3f)" }} />
         {/* WebGL canvas */}
         <canvas
           ref={canvasRef}
