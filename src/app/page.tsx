@@ -171,8 +171,8 @@ export default function Home() {
 
       {/* ─── Hero with WebGL Mesh Gradient ─── */}
       <section ref={heroRef} className="relative h-screen min-h-[700px] overflow-hidden">
-        {/* CSS fallback */}
-        <div className="mesh-gradient absolute inset-0" />
+        {/* Static gradient placeholder — same colors as Lumora preset, hidden once WebGL paints */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #ef008f 0%, #6ec3f4 35%, #7038ff 65%, #fbaf3f 100%)" }} />
         {/* WebGL canvas */}
         <canvas
           ref={canvasRef}
