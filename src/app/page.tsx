@@ -85,7 +85,7 @@ export default function Home() {
   const bentoRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gradientRef = useRef<any>(null);
-  const styleRef = useRef<HTMLStyleElement>(null);
+
 
   const handleAnalyze = useCallback(() => {
     const target = url.trim();
@@ -127,28 +127,27 @@ export default function Home() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Initial colors via <style> tag (reliable for getComputedStyle)
-    const style = document.createElement("style");
-    const c = GRADIENT_PRESETS.lumora.colors;
-    style.textContent = `#gradient-canvas{--gradient-color-1:${c[0]};--gradient-color-2:${c[1]};--gradient-color-3:${c[2]};--gradient-color-4:${c[3]};}`;
-    document.head.appendChild(style);
-    styleRef.current = style;
-
-    const script = document.createElement("script");
-    script.src = "/gradient.js";
-    script.onload = () => {
+    const initGradient = () => {
       const G = new (window as any).Gradient();
       G.initGradient("#gradient-canvas");
       gradientRef.current = G;
     };
-    document.head.appendChild(script);
+
+    // beforeInteractive in layout.tsx loads gradient.js early — usually ready by now
+    if ((window as any).Gradient) {
+      initGradient();
+    } else {
+      // Fallback: script not yet executed (rare race condition)
+      const fallback = document.createElement("script");
+      fallback.src = "/gradient.js";
+      fallback.onload = initGradient;
+      document.head.appendChild(fallback);
+    }
 
     return () => {
       if (gradientRef.current) {
         try { gradientRef.current.disconnect(); } catch {}
       }
-      script.remove();
-      style.remove();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -181,6 +180,12 @@ export default function Home() {
           className="absolute inset-0 h-full w-full"
           data-js-darken-top
           data-transition-in
+          style={{
+            "--gradient-color-1": GRADIENT_PRESETS.lumora.colors[0],
+            "--gradient-color-2": GRADIENT_PRESETS.lumora.colors[1],
+            "--gradient-color-3": GRADIENT_PRESETS.lumora.colors[2],
+            "--gradient-color-4": GRADIENT_PRESETS.lumora.colors[3],
+          } as React.CSSProperties}
         />
         <div className="absolute inset-x-0 bottom-0 z-[2] h-[104px] bg-gradient-to-t from-white to-transparent" />
 

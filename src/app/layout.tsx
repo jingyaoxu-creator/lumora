@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Geist } from "next/font/google";
 import { Instrument_Serif } from "next/font/google";
+import Script from "next/script";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/lib/i18n/context";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -50,6 +51,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
+        <Script src="/gradient.js" strategy="beforeInteractive" />
         <ThemeProvider>
           <LanguageProvider>
             <TooltipProvider>
