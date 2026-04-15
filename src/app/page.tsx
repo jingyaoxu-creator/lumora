@@ -282,7 +282,7 @@ export default function Home() {
       </section>
 
       {/* ─── Bento Feature Grid ─── */}
-      <section ref={bentoRef} className="mx-auto max-w-6xl px-6 pb-32 pt-20">
+      <section ref={bentoRef} className="mx-auto max-w-6xl px-6 pb-14 pt-20">
         <div data-bento className="mb-14 text-center">
           <h2 className="mb-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
             {t("home.statsHeading")}
@@ -584,9 +584,7 @@ export default function Home() {
       {/* ─── CTA ─── */}
       <section className="relative overflow-hidden">
         <div className="mesh-gradient absolute inset-0" />
-        <div className="absolute inset-x-0 top-0 z-[1] h-12 bg-gradient-to-b from-white to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 z-[2] h-12 bg-gradient-to-t from-white to-transparent" />
-        <div className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center">
+        <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 text-center">
           <h2 className="mb-4 text-2xl font-bold tracking-tight text-white sm:text-3xl">
             {t("home.ctaTitle")}
           </h2>
